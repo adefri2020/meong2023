@@ -1,1 +1,51 @@
+name: V17.1 YouTube Test
 
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v17-1-youtube-test
+  cancel-in-progress: false
+
+jobs:
+  run-v17-1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Run V17.1
+        env:
+          INPUT_CSV: videos.csv
+          OUTPUT_CSV: hasil_test_play_button.csv
+          PYTHONUNBUFFERED: "1"
+        run: |
+          python V17_1_GITHUB.py
+
+      - name: Upload result CSV
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hasil-v17-1-${{ github.run_number }}
+          path: hasil_test_play_button.csv
+          if-no-files-found: warn
+          retention-days: 7

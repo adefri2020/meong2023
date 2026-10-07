@@ -1,4 +1,4 @@
-name: V17.2 YouTube Test
+name: V17.3.1 YouTube Test
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 jobs:
-  run-v17-2:
+  run-v17-3-1:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,16 +28,16 @@ jobs:
         run: |
           python -m playwright install --with-deps chromium
 
-      - name: Run V17.2
+      - name: Run V17.3.1
         run: |
-          python V17_2_GITHUB.py
+          python V17_3_1.py
 
-      - name: Upload V17.2 results
+      - name: Upload V17.3.1 results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: hasil-v17-2-${{ github.run_number }}
+          name: hasil-v17-3-1-${{ github.run_number }}
           path: |
             hasil_test_play_button.csv
-            debug_v17_2/
+            debug_v17_3_1/
           if-no-files-found: warn

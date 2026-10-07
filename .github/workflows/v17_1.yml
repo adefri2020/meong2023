@@ -1,6 +1,6 @@
 name: V17.1 YouTube Test
 
-on:
+"on":
   workflow_dispatch:
   schedule:
     - cron: "0 */3 * * *"
